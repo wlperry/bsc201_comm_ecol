@@ -13,7 +13,7 @@ diversity.df <- read_excel("data/bsc201_community_lab_data.xlsx") |>
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # AQUATIC DIVERISTY T-TEST---------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-# T-Test for Aquatic Diversity in Resotred and Unrestored Sites---------
+# T-Test for Aquatic Diversity in Restored and Unrestored Sites---------
 
 aquatic_t_test.model <- t.test(aquatic_shannon_diversity ~ restoration_status, 
   data=diversity.df,
