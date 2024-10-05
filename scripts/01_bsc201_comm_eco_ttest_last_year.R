@@ -4,16 +4,13 @@ library(janitor)
 library(tidyverse)
 
 # load the data as diversity.df
-diversity.df <- read_excel("data/bsc201_community_lab_data.xlsx") |> 
-  clean_names()  |>
-  mutate(aquatic_shannon_diversity = as.numeric(aquatic_shannon_diversity),
-         terrestrial_shannon_diversity = as.numeric(terrestrial_shannon_diversity),
-        plant_richness = as.numeric(plant_richness))
+diversity.df <- read_excel("data/bsc201_community_lab_data_last_year.xlsx") |> 
+  clean_names() 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # AQUATIC DIVERISTY T-TEST---------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-# T-Test for Aquatic Diversity in Resotred and Unrestored Sites---------
+# T-Test for Aquaitc Diveristy in Resotred and Unrestored Sites---------
 
 aquatic_t_test.model <- t.test(aquatic_shannon_diversity ~ restoration_status, 
   data=diversity.df,
@@ -35,16 +32,19 @@ aquatic_diverity.plot <- diversity.df |>
       stat_summary(fun.data = mean_se, geom = "errorbar", width = .2) +
   labs(x="Restoration Status", y="Aquatic Shannon Diversity")+
   scale_y_continuous(expand = expansion(mult = c(0, 0.1)))+
-  annotate("text", x = 2, 
-          y = max(diversity.df$aquatic_shannon_diversity) * .8, # change the 0.8 to a value that allow syou to plot it
-          label = paste("t =", t_stat_aquatic, "\n", "p =", p_value_aquatic, "\n", "df =", df_aquatic),
-          size = 5, hjust = 0.5)
+  annotate("text", x = 1,  # Adjust the x value as needed
+             y = max(diversity.df$aquatic_shannon_diversity, na.rm=TRUE) * 0.7,  # Adjust the y value to position it better
+             label = paste("t =", t_stat_aquatic, "\n", 
+                "p =", p_value_aquatic, "\n", 
+                "df =", df_aquatic),
+                size = 5, hjust = 0)
+
 
 # Show the Aquatic T Test Plot
 aquatic_diverity.plot
 
 # Save the Aquatic T Test Plot-------
-ggsave(aquatic_diverity.plot, file = "figures/aquatic_diverity_ttestplot.pdf", 
+ggsave(aquatic_diverity.plot, file = "figures/aquatic_diverity_ttestplot_old.pdf", 
        width = 6, height = 6, units = "in", dpi = 300)
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
@@ -72,7 +72,7 @@ terrestrial_diverity.plot <- diversity.df |>
   labs(x="Restoration Status", y="Terrestrial Shannon Diversity")+
   scale_y_continuous(expand = expansion(mult = c(0, 0.1)))+
   annotate("text", x = 2, 
-          y = max(diversity.df$terrestrial_shannon_diversity) * 0.9, # change the 0.9 to a value that allow syou to plot it
+          y = max(diversity.df$terrestrial_shannon_diversity, na.rm=TRUE) * 0.15, # change the 0.9 to a value that allow syou to plot it
           label = paste("t =", t_stat_terrestrial, "\n", 
           "p =", p_value_terrestrial, "\n", 
           "df =", df_terrestrial),
@@ -82,7 +82,7 @@ terrestrial_diverity.plot <- diversity.df |>
 terrestrial_diverity.plot
 
 # Save the Terrestrial T Test Plot-------
-ggsave(terrestrial_diverity.plot, file = "figures/terrestrial_diverity_ttest_plot.pdf", 
+ggsave(terrestrial_diverity.plot, file = "figures/terrestrial_diverity_ttest_plot_old.pdf", 
        width = 6, height = 6, units = "in", dpi = 300)
 
 
@@ -106,15 +106,15 @@ aq_line_equation <- sprintf("y = %.4fx + %.4f", aq_slope, aq_intercept)
 # Print the line equation for aquatic diveristy versus plant richness
 print(aq_line_equation)
 
-# Create the Aquatic Diversity verse plant richness plot -------
+# Create the Aquatic Diveristy verse plant richness plot -------
 aquatic_richness.plot <- diversity.df |> 
   ggplot(aes(plant_richness, aquatic_shannon_diversity)) +
     geom_point()+
     geom_smooth(method="lm", se=FALSE) +
   labs(x="Plant Species Richness", y="Aquatic Shannon Diversity")+
   scale_y_continuous(expand = expansion(mult = c(0, 0.1)))+
-  annotate("text", x = min(diversity.df$plant_richness)+0.05, # adjust the 0.05 to move the the right with larger value 
-          y = max(diversity.df$terrestrial_shannon_diversity) * 0.75, # change the 0.75 to a value that allow syou to plot it
+  annotate("text", x = min(diversity.df$plant_richness, na.rm=TRUE)+0.05, # adjust the 0.05 to move the the right with larger value 
+          y = max(diversity.df$terrestrial_shannon_diversity, na.rm=TRUE) * 1.3, # change the 0.75 to a value that allow syou to plot it
           label = paste("Linear Regression Equation:", aq_line_equation, "\n", 
           "r^2 =", round(summary(plant_aquatic_regressison.model)$r.squared, 2), "\n", 
           "p =", round(summary(plant_aquatic_regressison.model)$coefficients[2,4], 4)),
@@ -124,7 +124,7 @@ aquatic_richness.plot <- diversity.df |>
 aquatic_richness.plot
 
 # Save the Aquatic diversity versus plant richness plot-------
-ggsave(aquatic_richness.plot, file = "figures/aquatic_diversity_plant_richness_regression.pdf", 
+ggsave(aquatic_richness.plot, file = "figures/aquatic_diversity_plant_richness_regression_old.pdf", 
        width = 6, height = 6, units = "in", dpi = 300)
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
@@ -151,8 +151,8 @@ terrestrial_richness.plot <- diversity.df |>
     geom_smooth(method="lm", se=FALSE) +
   labs(x="Plant Species Richness", y="Terrestrial Shannon Diversity")+
   scale_y_continuous(expand = expansion(mult = c(0, 0.1)))+
-  annotate("text", x = min(diversity.df$plant_richness)+0.05, # adjust the 0.05 to move the the right with larger value 
-          y = max(diversity.df$terrestrial_shannon_diversity) * 0.95, # change the 0.95 to a value that allow syou to plot it
+  annotate("text", x = min(diversity.df$plant_richness, na.rm = TRUE)+0.05, # adjust the 0.05 to move the the right with larger value 
+          y = max(diversity.df$terrestrial_shannon_diversity, na.rm = TRUE) * 0.95, # change the 0.95 to a value that allow syou to plot it
           label = paste("Linear Regression Equation:", terr_line_equation, "\n", 
           "r^2 =", round(summary(terestrial_regressison.model)$r.squared, 2), "\n", 
           "p =", round(summary(terestrial_regressison.model)$coefficients[2,4], 4)),
@@ -162,6 +162,7 @@ terrestrial_richness.plot <- diversity.df |>
 terrestrial_richness.plot
 
 # Save the Aquatic diversity versus plant richness plot-------
-ggsave(terrestrial_richness.plot, file = "figures/terrestrial_diversity_plant_richness_regresssion.pdf", 
+ggsave(terrestrial_richness.plot, file = "figures/terrestrial_diversity_plant_richness_regresssion_old.pdf", 
        width = 6, height = 6, units = "in", dpi = 300)
+
 
