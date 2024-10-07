@@ -35,7 +35,7 @@ aquatic_diverity.plot <- diversity.df |>
       stat_summary(fun.data = mean_se, geom = "errorbar", width = .2) +
   labs(x="Restoration Status", y="Aquatic Shannon Diversity")+
   scale_y_continuous(expand = expansion(mult = c(0, 0.1)))+
-  annotate("text", x = 2, 
+  annotate("text", x = 1, 
           y = max(diversity.df$aquatic_shannon_diversity, na.rm=TRUE) * .8, # change the 0.8 to a value that allow syou to plot it
           label = paste("t =", t_stat_aquatic, "\n", "p =", p_value_aquatic, "\n", "df =", df_aquatic),
           size = 5, hjust = 0.5)
@@ -114,7 +114,7 @@ aquatic_richness.plot <- diversity.df |>
   labs(x="Plant Species Richness", y="Aquatic Shannon Diversity")+
   scale_y_continuous(expand = expansion(mult = c(0, 0.1)))+
   annotate("text", x = min(diversity.df$plant_richness, na.rm=TRUE)+0.05, # adjust the 0.05 to move the the right with larger value 
-          y = max(diversity.df$terrestrial_shannon_diversity, na.rm=TRUE) * 0.75, # change the 0.75 to a value that allow syou to plot it
+          y = max(diversity.df$terrestrial_shannon_diversity, na.rm=TRUE) * 0.65, # change the 0.75 to a value that allow syou to plot it
           label = paste("Linear Regression Equation:", aq_line_equation, "\n", 
           "r^2 =", round(summary(plant_aquatic_regressison.model)$r.squared, 2), "\n", 
           "p =", round(summary(plant_aquatic_regressison.model)$coefficients[2,4], 4)),
@@ -152,7 +152,7 @@ terrestrial_richness.plot <- diversity.df |>
   labs(x="Plant Species Richness", y="Terrestrial Shannon Diversity")+
   scale_y_continuous(expand = expansion(mult = c(0, 0.1)))+
   annotate("text", x = min(diversity.df$plant_richness, na.rm=TRUE)+0.05, # adjust the 0.05 to move the the right with larger value 
-          y = max(diversity.df$terrestrial_shannon_diversity, na.rm=TRUE) * 0.95, # change the 0.95 to a value that allow syou to plot it
+          y = max(diversity.df$terrestrial_shannon_diversity, na.rm=TRUE) * 0.85, # change the 0.95 to a value that allow syou to plot it
           label = paste("Linear Regression Equation:", terr_line_equation, "\n", 
           "r^2 =", round(summary(terestrial_regressison.model)$r.squared, 2), "\n", 
           "p =", round(summary(terestrial_regressison.model)$coefficients[2,4], 4)),
