@@ -8,7 +8,7 @@ diversity.df <- read_excel("data/bsc201_community_lab_data.xlsx") |>
   clean_names()  |>
   mutate(aquatic_shannon_diversity = as.numeric(aquatic_shannon_diversity),
          terrestrial_shannon_diversity = as.numeric(terrestrial_shannon_diversity),
-        plant_richness = as.numeric(plant_richness))
+         plant_richness = as.numeric(plant_richness))
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # AQUATIC DIVERISTY T-TEST---------
@@ -36,7 +36,7 @@ aquatic_diverity.plot <- diversity.df |>
   labs(x="Restoration Status", y="Aquatic Shannon Diversity")+
   scale_y_continuous(expand = expansion(mult = c(0, 0.1)))+
   annotate("text", x = 2, 
-          y = max(diversity.df$aquatic_shannon_diversity) * .8, # change the 0.8 to a value that allow syou to plot it
+          y = max(diversity.df$aquatic_shannon_diversity, na.rm=TRUE) * .8, # change the 0.8 to a value that allow syou to plot it
           label = paste("t =", t_stat_aquatic, "\n", "p =", p_value_aquatic, "\n", "df =", df_aquatic),
           size = 5, hjust = 0.5)
 
@@ -72,7 +72,7 @@ terrestrial_diverity.plot <- diversity.df |>
   labs(x="Restoration Status", y="Terrestrial Shannon Diversity")+
   scale_y_continuous(expand = expansion(mult = c(0, 0.1)))+
   annotate("text", x = 2, 
-          y = max(diversity.df$terrestrial_shannon_diversity) * 0.9, # change the 0.9 to a value that allow syou to plot it
+          y = max(diversity.df$terrestrial_shannon_diversity, na.rm=TRUE) * 0.9, # change the 0.9 to a value that allow syou to plot it
           label = paste("t =", t_stat_terrestrial, "\n", 
           "p =", p_value_terrestrial, "\n", 
           "df =", df_terrestrial),
@@ -113,8 +113,8 @@ aquatic_richness.plot <- diversity.df |>
     geom_smooth(method="lm", se=FALSE) +
   labs(x="Plant Species Richness", y="Aquatic Shannon Diversity")+
   scale_y_continuous(expand = expansion(mult = c(0, 0.1)))+
-  annotate("text", x = min(diversity.df$plant_richness)+0.05, # adjust the 0.05 to move the the right with larger value 
-          y = max(diversity.df$terrestrial_shannon_diversity) * 0.75, # change the 0.75 to a value that allow syou to plot it
+  annotate("text", x = min(diversity.df$plant_richness, na.rm=TRUE)+0.05, # adjust the 0.05 to move the the right with larger value 
+          y = max(diversity.df$terrestrial_shannon_diversity, na.rm=TRUE) * 0.75, # change the 0.75 to a value that allow syou to plot it
           label = paste("Linear Regression Equation:", aq_line_equation, "\n", 
           "r^2 =", round(summary(plant_aquatic_regressison.model)$r.squared, 2), "\n", 
           "p =", round(summary(plant_aquatic_regressison.model)$coefficients[2,4], 4)),
@@ -151,8 +151,8 @@ terrestrial_richness.plot <- diversity.df |>
     geom_smooth(method="lm", se=FALSE) +
   labs(x="Plant Species Richness", y="Terrestrial Shannon Diversity")+
   scale_y_continuous(expand = expansion(mult = c(0, 0.1)))+
-  annotate("text", x = min(diversity.df$plant_richness)+0.05, # adjust the 0.05 to move the the right with larger value 
-          y = max(diversity.df$terrestrial_shannon_diversity) * 0.95, # change the 0.95 to a value that allow syou to plot it
+  annotate("text", x = min(diversity.df$plant_richness, na.rm=TRUE)+0.05, # adjust the 0.05 to move the the right with larger value 
+          y = max(diversity.df$terrestrial_shannon_diversity, na.rm=TRUE) * 0.95, # change the 0.95 to a value that allow syou to plot it
           label = paste("Linear Regression Equation:", terr_line_equation, "\n", 
           "r^2 =", round(summary(terestrial_regressison.model)$r.squared, 2), "\n", 
           "p =", round(summary(terestrial_regressison.model)$coefficients[2,4], 4)),
